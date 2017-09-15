@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zhangyujie.cloudnote.dao.BookDao">
+	<select id="findByUserID" parameterType="String" resultType="com.zhangyujie.cloudnote.entity.Notebook">
+		SELECT * 
+		FROM cn_notebook 
+		WHERE cn_user_id=#{cn_user_id} and cn_notebook_type_id="5"
+	</select>
+	<insert id="save" parameterType="com.zhangyujie.cloudnote.entity.Notebook">
+		INSERT INTO cn_notebook
+		(cn_notebook_id,cn_user_id,cn_notebook_type_id,cn_notebook_name,cn_notebook_createtime)
+		VALUES
+		(#{cn_notebook_id},#{cn_user_id},#{cn_notebook_type_id},#{cn_notebook_name},#{cn_notebook_createtime})
+	</insert>
+	<update id="rename" parameterType="com.zhangyujie.cloudnote.entity.Notebook">
+		UPDATE cn_notebook
+		SET cn_notebook_name=#{cn_notebook_name}
+		WHERE cn_notebook_id=#{cn_notebook_id}
+	</update>
+	<delete id="deleteByBookID" parameterType="String">
+		DELETE FROM cn_notebook WHERE cn_notebook_id=#{bookID}
+	</delete>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zhangyujie.cloudnote.dao.LikeDao">
+	<insert id="save" parameterType="com.zhangyujie.cloudnote.entity.Like">
+		INSERT INTO cn_like
+		(cn_share_id,cn_user_id,cn_like_id)
+		VALUES 
+		(#{cn_share_id}, #{cn_user_id}, #{cn_like_id})
+	</insert>
+	<select id="findByUserIDAndShareID" parameterType="com.zhangyujie.cloudnote.entity.Like" resultType="com.zhangyujie.cloudnote.entity.Like">
+		SELECT * FROM cn_like 
+		WHERE cn_user_id=#{cn_user_id} and cn_share_id=#{cn_share_id}
+	</select>
+	<select id="findByUserID" parameterType="String" resultType="Map">
+		SELECT l.cn_like_id as cn_like_id,n.cn_note_title as cn_note_title
+		FROM cn_like l,cn_share s,cn_note n
+		WHERE l.cn_user_id=#{userID} and l.cn_share_id=s.cn_share_id and s.cn_note_id=n.cn_note_id
+	</select>
+	<select id="findByLikeID" parameterType="String" resultType="Map">
+		SELECT n.cn_note_title as cn_note_title, n.cn_note_body as cn_note_body
+		FROM cn_like l,cn_share s,cn_note n
+		WHERE l.cn_like_id=#{likeID} and l.cn_share_id=s.cn_share_id and s.cn_note_id=n.cn_note_id
+	</select>
+	<delete id="deleteByLikeID" parameterType="String">
+		DELETE FROM cn_like WHERE cn_like_id=#{likeID}
+	</delete>
+</mapper>

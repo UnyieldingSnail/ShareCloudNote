@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="com.zhangyujie.cloudnote.dao.ShareDao">
+	<insert id="save" parameterType="com.zhangyujie.cloudnote.entity.Share">
+		INSERT INTO cn_share
+		(cn_share_id,cn_note_id)
+		VALUES 
+		(#{cn_share_id}, #{cn_note_id})
+	</insert>
+	<select id="findLikeTitle" parameterType="Map" resultType="Map">
+		SELECT r.cn_share_id as cn_share_id, r.cn_share_title as cn_share_title, l.cn_user_id as cn_user_id
+		FROM cn_like l
+		RIGHT JOIN(
+			SELECT s.cn_share_id as cn_share_id,n.cn_note_title as cn_share_title
+			FROM cn_share s, cn_note n
+			WHERE n.cn_note_title like #{key} and n.cn_note_id=s.cn_note_id) as r
+		ON l.cn_share_id=r.cn_share_id
+		limit #{begin},5
+	</select>
+	<select id="findByShareID" parameterType="String" resultType="com.zhangyujie.cloudnote.entity.Share">
+		SELECT n.cn_note_title as cn_share_title,n.cn_note_body as cn_share_body
+		FROM cn_share s,cn_note n
+		WHERE cn_share_id = #{shareID} and s.cn_note_id=n.cn_note_id
+	</select>
+</mapper>
